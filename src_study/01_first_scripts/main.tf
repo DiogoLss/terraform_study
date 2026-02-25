@@ -9,18 +9,20 @@ terraform {
   }
 }
 
-
-
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
+  profile = var.profile
 }
 
 resource "aws_s3_bucket" "bucket-terraform" {
   bucket = "bucket-terraform-8s23s74dd3a28fs94as3d89d"
 
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-    ManagedBy   = "Terraform"
-  }
+  tags = var.bucket_tags
+}
+
+resource "aws_instance" "test" {  
+  ami           = var.ami_name
+  instance_type = var.instance_type
+
+  tags = var.EC2_tags
 }
