@@ -21,24 +21,4 @@ variable "ami_name" {
 variable "instance_type" {
     type = string
     description = "The type of EC2 instance to create."
-    default     = "t3.micro"
-}
-
-variable "bucket_tags" {
-    type = map(string)
-    description = "A map of tags to apply to the S3 bucket."
-    default     = {
-    Name        = "Bucket Terraform"
-    Environment = "Dev"
-    ManagedBy   = "Terraform"
-  }
-}
-
-variable "EC2_tags" {
-    type = map(string)
-    description = "A map of tags to apply to the EC2 instance."
-    default     = {
-    Name        = "Ubuntu"
-    Project     = "Study Terraform"
-  }
 }
