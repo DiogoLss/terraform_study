@@ -3,17 +3,31 @@ terraform {
 
   required_providers {
     aws = {
-        source = "hashicorp/aws"
-        version = "6.33.0"
+      source  = "hashicorp/aws"
+      version = "6.33.0"
     }
     random = {
-        source = "hashicorp/random"
-        version = "3.8.1"
+      source  = "hashicorp/random"
+      version = "3.8.1"
     }
   }
+  backend "s3" {}
 }
 
 provider "aws" {
-  region = var.aws_region
+  region  = var.aws_region
   profile = var.profile
+}
+
+data aws_caller_identity "current" {}
+
+resource "aws_s3_bucket" "remote-state" {
+  bucket = "tf-state${data.aws_caller_identity.current.account_id}"
+  tags = local.common_tags
+}
+resource "aws_s3_bucket_versioning" "versioning_remote-state" {
+  bucket = aws_s3_bucket.remote-state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
